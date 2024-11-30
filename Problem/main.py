@@ -1,5 +1,5 @@
 import math
-from sympy import symbols, solve
+from sympy import symbols
 
 # Calculo do Determinante
 def determinante_Matriz(M):
@@ -13,35 +13,36 @@ def determinante_Matriz(M):
             det += ((-1) ** coluna) * M[0][coluna] * determinante_Matriz(sub_matrix)
         return det
     
-def autovalores(M):
-    lamb = symbols('lambda')
-    
+def A_Menos_lambda(M,lamb):
     n = len(M)
-    M_lambda = [] # Matriz - lambda
+    M_lambda = []
     
     for i in range(n):
-        linha = []  # Linha atual da matriz
+        linha = []
         for j in range(n):
             if i == j:
-                value = M[i][j] - lamb
+                value = M[i][j]-lamb
             else:
                 value = M[i][j]
             linha.append(value)
-
         M_lambda.append(linha)
-    
-    det_M_lambda = determinante_Matriz(M_lambda)
-    
-    # Resolve o polinômio característico (det(A - lambda*I) = 0)
-    autovalores = solve(det_M_lambda, lamb)
-    return autovalores
-    
-    
+    return M_lambda
+
+def polinomio(M):
+    lamb = symbols('lambda')
+    M_lambda = A_Menos_lambda(M,lamb)
+    det_MLambda = determinante_Matriz(M_lambda)
+    return det_MLambda
+
 # Matriz 4x4
 M = [[2,0,4,2],
     [0,4,8,0],
     [0,0,2,2],
     [0,0,0,6]]
 
-print(f"Determinante : {determinante_Matriz(M)}")
-print(f"Autovalores : {autovalores(M)}")
+det_polinomio = polinomio(M)
+print(f"Polinômio Caractéristico: {det_polinomio}")
+
+# AutoValor
+def autovalor():
+    print()
