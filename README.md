@@ -70,7 +70,7 @@ O trabalho deve conter os seguintes elementos:
 
 1. Ítalo Cezar Eugênio de Santanas
 2. Joel Alves dos Santos
-3. 
+3. Renan da Costa e Silva Sousa
 
 ---
 
