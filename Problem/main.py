@@ -34,7 +34,7 @@ def polinomio(M):
     det_MLambda = determinante_Matriz(M_lambda)
     return det_MLambda
 
-# Matriz 4x4
+# Matriz 4x4 to
 M = [[2,0,4,2],
     [0,4,8,0],
     [0,0,2,2],
