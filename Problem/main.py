@@ -1,5 +1,5 @@
 import math
-from sympy import symbols
+from sympy import symbols,diff,simplify
 
 # Calculo do Determinante
 def determinante_Matriz(M):
@@ -34,7 +34,7 @@ def polinomio(M):
     det_MLambda = determinante_Matriz(M_lambda)
     return det_MLambda
 
-# Matriz 4x4 to
+# Matriz 4x4
 M = [[2,0,4,2],
     [0,4,8,0],
     [0,0,2,2],
@@ -44,5 +44,61 @@ det_polinomio = polinomio(M)
 print(f"Polinômio Caractéristico: {det_polinomio}")
 
 # AutoValor
-def autovalor():
-    print()
+def autovalores(polinomio):
+    lamb = symbols('lambda')
+    coeficientes = polinomio.as_poly(lamb).all_coeffs()
+    coeficientes = [float(c) for c in coeficientes]
+    grau = len(coeficientes) - 1
+
+    print(f"Coeficientes: {coeficientes}, Grau: {grau}")
+
+    if grau == 1:
+        a, b = coeficientes
+        print("Resolvendo grau 1")
+        return [-b / a]
+    elif grau == 2:
+        a, b, c = coeficientes
+        print("Resolvendo grau 2")
+        discriminante = b**2 - 4*a*c
+        if discriminante < 0:
+            return []
+        elif discriminante == 0:
+            return [-b / (2*a)]
+        else:
+            raiz1 = (-b + math.sqrt(discriminante)) / (2*a)
+            raiz2 = (-b - math.sqrt(discriminante)) / (2*a)
+            return [raiz1, raiz2]
+    else:
+        raizes = []
+        d_polinomio = diff(polinomio, lamb)
+
+        def newton_raphson(poly, d_poly, x0, tol=1e-6, max_iter=100):
+            x = x0
+            for i in range(max_iter):
+                fx = poly.subs(lamb, x)
+                dfx = d_poly.subs(lamb, x)
+                print(f"Iteração {i}: x = {x}, f(x) = {fx}, f'(x) = {dfx}")
+                if abs(dfx) < 1e-10:
+                    break
+                x_new = x - fx / dfx
+                if abs(x_new - x) < tol:
+                    print(f"Convergiu para: {x_new}")
+                    return x_new
+                x = x_new
+            return x
+
+        for i in range(grau):
+            x0 = i + 1
+            print(f"Procurando raiz {i+1} com x0 = {x0}")
+            raiz = newton_raphson(polinomio, d_polinomio, x0)
+            raiz = simplify(raiz)
+            print(f"Raiz encontrada: {raiz}")
+            raizes.append(raiz)
+
+            polinomio = simplify(polinomio / (lamb - raiz))
+            d_polinomio = diff(polinomio, lamb)
+            print(f"Polinômio reduzido: {polinomio}")
+
+        return raizes
+autovalores_encontrados = autovalores(det_polinomio)
+print(f"Autovalores: {autovalores_encontrados}")
