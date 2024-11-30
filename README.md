@@ -69,7 +69,7 @@ O trabalho deve conter os seguintes elementos:
 ## **Equipe**
 
 1. Ítalo Cezar Eugênio de Santanas
-2. 
+2. Joel Alves dos Santos
 3. 
 
 ---
